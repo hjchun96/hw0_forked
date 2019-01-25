@@ -14,7 +14,7 @@ import ShaderProgram, {Shader} from './rendering/gl/ShaderProgram';
 const controls = {
   tesselations: 5,
   'Load Scene': loadScene, // A function pointer, essentially,
-  'Color': [ 255, 0, 0, 1],
+  'Color': [ 255, 0, 0, 1.0],
   'Shader' : 'Lambert',
 };
 
@@ -22,7 +22,7 @@ let icosphere: Icosphere;
 let square: Square;
 let cube: Cube;
 let prevTesselations: number = 5;
-let prevColor: number[] = [255, 0, 0, 1];
+let prevColor: number[] = [255, 0, 0, 1.0];
 
 function loadScene() {
   icosphere = new Icosphere(vec3.fromValues(0, 0, 0), 1, controls.tesselations);
@@ -80,16 +80,16 @@ function main() {
 
   let prevShader = lambert;
   let prevShader_type = 'Lambert';
-  let color = vec4.fromValues(prevColor[0]/255.0, prevColor[1]/255.0, prevColor[2]/255, 1);
+  let time = 0;
 
   // This function will be called every frame
   function tick() {
-    // let color = vec4.fromValues(prevColor[0]/255, prevColor[1]/255, prevColor[2]/255, 1);
     let shader = prevShader
     camera.update();
     stats.begin();
     gl.viewport(0, 0, window.innerWidth, window.innerHeight);
     renderer.clear();
+    time += 1;
 
     if(controls.tesselations != prevTesselations)
     {
@@ -100,19 +100,9 @@ function main() {
 
     if(controls.Color != prevColor)
     {
-      console.log("Previous Color is:")
-      console.log(prevColor)
-
-      console.log("Selected Color is:")
-      console.log(controls.Color)
       prevColor = controls.Color;
-      console.log(prevColor[0])
-      console.log(prevColor[1])
-      console.log(prevColor[2])
-      color = vec4.fromValues(prevColor[0]/255/0, prevColor[1]/255.0, prevColor[2]/255.0, 1);
-      console.log("New color is:")
-      console.log(color)
     }
+    let color = vec4.fromValues(prevColor[0]/255.0, prevColor[1]/255.0, prevColor[2]/255.0, prevColor[3]);
 
     if(controls.Shader != prevShader_type)
     {
@@ -132,7 +122,7 @@ function main() {
       // icosphere,
       // square,
       cube,
-    ], color);
+    ], color, time);
     stats.end();
 
     // Tell the browser to call `tick` again whenever it renders a new frame

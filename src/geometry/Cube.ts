@@ -89,7 +89,7 @@ class Cube extends Drawable {
 																	  -1, -1, -1, 1,
 																	  -1, -1,  1, 1,
 																	  -1,  1,  1, 1,
-																	  -1,  1, -1, 1,
+																	  -1,  1, -1, 1
 																		]);
 
     this.generateIdx();
